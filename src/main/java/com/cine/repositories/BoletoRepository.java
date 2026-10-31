@@ -9,9 +9,7 @@ public interface BoletoRepository extends JpaRepository<Boleto, Long> {
 
     List<Boleto> findByFuncionId(Long funcionId);
 
-    List<Boleto> findByFuncionIdentifier(Long funcionId);
-
-    List<Boleto> findByClienteMail(String email);
+    List<Boleto> findByClienteEmail(String email);
 
     // TODO: verificar si un asiento (fila, numero) ya está ocupado en una función
 }

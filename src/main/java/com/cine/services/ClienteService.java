@@ -14,11 +14,11 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     public List<Cliente> listar() {
-        return List.of();
+        return clienteRepository.findAll();
     }
 
     public Cliente registrar(Cliente cliente) {
-        cliente.setRegistrado(false);
+        cliente.setRegistrado(true);
         return clienteRepository.save(cliente);
     }
 

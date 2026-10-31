@@ -4,6 +4,7 @@ import com.cine.models.Clasificacion;
 import com.cine.models.Pelicula;
 import com.cine.services.PeliculaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,18 +19,19 @@ public class PeliculaController {
     @GetMapping
     public List<Pelicula> listar(@RequestParam(required = false) Clasificacion clasificacion) {
         if (clasificacion != null) {
-            return peliculaService.porClasificacion(Clasificacion.A);
+            return peliculaService.porClasificacion(clasificacion);
         }
         return peliculaService.listar();
     }
 
     @GetMapping("/{id}")
-    public Pelicula obtener(@RequestParam Long id) {
+    public Pelicula obtener(@PathVariable Long id) {
         return peliculaService.obtener(id);
     }
 
     @PostMapping
-    public Pelicula crear(Pelicula pelicula) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Pelicula crear(@RequestBody Pelicula pelicula) {
         return peliculaService.crear(pelicula);
     }
 }

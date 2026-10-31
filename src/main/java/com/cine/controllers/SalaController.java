@@ -3,6 +3,7 @@ package com.cine.controllers;
 import com.cine.models.Sala;
 import com.cine.repositories.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,10 +17,11 @@ public class SalaController {
 
     @GetMapping
     public List<Sala> listar() {
-        return List.of();
+        return salaRepository.findAll();
     }
 
-    @PutMapping
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Sala crear(@RequestBody Sala sala) {
         return salaRepository.save(sala);
     }

@@ -1,5 +1,5 @@
 package com.cine.models;
 
 public enum Clasificacion {
-    A, B15, B, C, ATP
+    AA, A, B, B15, C, D
 }

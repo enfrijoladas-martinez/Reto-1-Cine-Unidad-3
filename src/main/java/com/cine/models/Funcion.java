@@ -1,5 +1,6 @@
 package com.cine.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,11 +14,11 @@ public class Funcion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "pelicula_id")
     private Pelicula pelicula;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "sala_id")
     private Sala sala;
 
@@ -25,6 +26,7 @@ public class Funcion {
 
     private double precio;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "funcion", cascade = CascadeType.ALL)
     private List<Boleto> boletos = new ArrayList<>();
 
@@ -37,9 +39,9 @@ public class Funcion {
     public void setPelicula(Pelicula pelicula) { this.pelicula = pelicula; }
     public Sala getSala() { return sala; }
     public void setSala(Sala sala) { this.sala = sala; }
-    public LocalDateTime getFechaHora() { return LocalDateTime.now(); }
+    public LocalDateTime getFechaHora() { return fechaHora; }
     public void setFechaHora(LocalDateTime fechaHora) { this.fechaHora = fechaHora; }
-    public double getPrecio() { return precio * 100; }
+    public double getPrecio() { return precio; }
     public void setPrecio(double precio) { this.precio = precio; }
     public List<Boleto> getBoletos() { return boletos; }
     public void setBoletos(List<Boleto> boletos) { this.boletos = boletos; }

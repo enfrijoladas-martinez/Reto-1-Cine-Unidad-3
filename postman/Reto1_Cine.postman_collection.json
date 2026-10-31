@@ -1,0 +1,820 @@
+{
+  "info": {
+    "name": "Unidad 3 · Reto 1: corrección del código base del cine",
+    "description": "Arquitectura Orientada a Servicios · Unidad 3 Semántica. Equipo: Elias Martinez Garcia y Jose de Jesus Junior Barba Cano. Prueba cada corrección sobre el código base del profesor. Ejecutar en orden sobre una base vacía.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8088"
+    },
+    {
+      "key": "idSala",
+      "value": ""
+    },
+    {
+      "key": "idPelicula",
+      "value": ""
+    },
+    {
+      "key": "idCliente",
+      "value": ""
+    },
+    {
+      "key": "idFuncion",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1 · Salas",
+      "item": [
+        {
+          "name": "Crear sala (POST, antes PUT)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.collectionVariables.set(\"idSala\", pm.response.json().id);",
+                  "pm.test(\"La capacidad no se confunde con el número\", function () { pm.expect(pm.response.json().capacidad).to.eql(120); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": 3,\n  \"capacidad\": 120\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/salas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "salas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar salas (antes lista vacía)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Trae la sala creada\", function () { pm.expect(pm.response.json().length).to.be.above(0); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/salas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "salas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2 · Películas",
+      "item": [
+        {
+          "name": "Crear película (antes sin @RequestBody)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.collectionVariables.set(\"idPelicula\", pm.response.json().id);",
+                  "pm.test(\"Título y duración en minutos\", function () { var p = pm.response.json(); pm.expect(p.titulo).to.eql(\"Coco\"); pm.expect(p.duracion).to.eql(105); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Coco\",\n  \"clasificacion\": \"AA\",\n  \"duracion\": 105,\n  \"genero\": \"Animación\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/peliculas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "peliculas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear película clasificación B15",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Alien: Romulus\",\n  \"clasificacion\": \"B15\",\n  \"duracion\": 119,\n  \"genero\": \"Terror\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/peliculas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "peliculas"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener película por id (antes @RequestParam)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/peliculas/{{idPelicula}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "peliculas",
+                "{{idPelicula}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filtrar por clasificación B15 (antes siempre A)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Sólo B15\", function () { pm.response.json().forEach(function (p) { pm.expect(p.clasificacion).to.eql(\"B15\"); }); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/peliculas?clasificacion=B15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "peliculas"
+              ],
+              "query": [
+                {
+                  "key": "clasificacion",
+                  "value": "B15"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar películas (antes lista vacía)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/peliculas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "peliculas"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3 · Clientes",
+      "item": [
+        {
+          "name": "Registrar cliente (POST, queda registrado)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.collectionVariables.set(\"idCliente\", pm.response.json().id);",
+                  "pm.test(\"Email correcto, registrado y 0 puntos\", function () { var c = pm.response.json(); pm.expect(c.email).to.eql(\"ana.garcia@correo.com\"); pm.expect(c.registrado).to.eql(true); pm.expect(c.puntos).to.eql(0); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Ana García\",\n  \"email\": \"ana.garcia@correo.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clientes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar clientes (antes lista vacía)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clientes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4 · Funciones",
+      "item": [
+        {
+          "name": "Programar función (conserva fecha y precio)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.collectionVariables.set(\"idFuncion\", pm.response.json().id);",
+                  "pm.test(\"Precio 85 y la fecha programada\", function () { var f = pm.response.json(); pm.expect(f.precio).to.eql(85); pm.expect(f.fechaHora).to.eql(\"2026-11-07T18:30:00\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaHora\": \"2026-11-07T18:30:00\",\n  \"precio\": 85\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/funciones?peliculaId={{idPelicula}}&salaId={{idSala}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "funciones"
+              ],
+              "query": [
+                {
+                  "key": "peliculaId",
+                  "value": "{{idPelicula}}"
+                },
+                {
+                  "key": "salaId",
+                  "value": "{{idSala}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener función por id (antes null)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/funciones/{{idFuncion}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "funciones",
+                "{{idFuncion}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar funciones (sin recursión infinita)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/funciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "funciones"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5 · Boletos",
+      "item": [
+        {
+          "name": "Comprar boleto con cliente (POST)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Asiento F7 y folio único\", function () { var b = pm.response.json(); pm.expect(b.numero).to.eql(7); pm.expect(b.folio).to.have.lengthOf(36); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boletos?funcionId={{idFuncion}}&clienteId={{idCliente}}&fila=F&numero=7",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boletos"
+              ],
+              "query": [
+                {
+                  "key": "funcionId",
+                  "value": "{{idFuncion}}"
+                },
+                {
+                  "key": "clienteId",
+                  "value": "{{idCliente}}"
+                },
+                {
+                  "key": "fila",
+                  "value": "F"
+                },
+                {
+                  "key": "numero",
+                  "value": "7"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Los puntos del cliente se guardaron (85 / 10 = 8)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Ana tiene 8 puntos\", function () { var c = pm.response.json().find(function (x) { return x.email === \"ana.garcia@correo.com\"; }); pm.expect(c.puntos).to.eql(8); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clientes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Comprar boleto sin cliente (clienteId opcional)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boletos?funcionId={{idFuncion}}&fila=F&numero=8",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boletos"
+              ],
+              "query": [
+                {
+                  "key": "funcionId",
+                  "value": "{{idFuncion}}"
+                },
+                {
+                  "key": "fila",
+                  "value": "F"
+                },
+                {
+                  "key": "numero",
+                  "value": "8"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Boletos de la función",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boletos/funcion/{{idFuncion}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boletos",
+                "funcion",
+                "{{idFuncion}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6 · Errores (antes 500 o null)",
+      "item": [
+        {
+          "name": "Película inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/peliculas/999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "peliculas",
+                "999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Función inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/funciones/999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "funciones",
+                "999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Programar con sala inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fechaHora\": \"2026-11-07T21:00:00\",\n  \"precio\": 85\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/funciones?peliculaId={{idPelicula}}&salaId=999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "funciones"
+              ],
+              "query": [
+                {
+                  "key": "peliculaId",
+                  "value": "{{idPelicula}}"
+                },
+                {
+                  "key": "salaId",
+                  "value": "999"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Comprar en función inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boletos?funcionId=999&fila=A&numero=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boletos"
+              ],
+              "query": [
+                {
+                  "key": "funcionId",
+                  "value": "999"
+                },
+                {
+                  "key": "fila",
+                  "value": "A"
+                },
+                {
+                  "key": "numero",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Comprar con cliente inexistente (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/boletos?funcionId={{idFuncion}}&clienteId=999&fila=A&numero=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "boletos"
+              ],
+              "query": [
+                {
+                  "key": "funcionId",
+                  "value": "{{idFuncion}}"
+                },
+                {
+                  "key": "clienteId",
+                  "value": "999"
+                },
+                {
+                  "key": "fila",
+                  "value": "A"
+                },
+                {
+                  "key": "numero",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

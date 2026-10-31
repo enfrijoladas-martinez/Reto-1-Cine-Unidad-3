@@ -7,7 +7,10 @@ import com.cine.repositories.BoletoRepository;
 import com.cine.repositories.ClienteRepository;
 import com.cine.repositories.FuncionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,19 +31,22 @@ public class BoletoService {
         return boletoRepository.findByFuncionId(funcionId);
     }
 
+    @Transactional
     public Boleto comprar(Long funcionId, Long clienteId, String fila, int numero) {
-        Funcion funcion = funcionRepository.findById(funcionId).orElseThrow();
+        Funcion funcion = funcionRepository.findById(funcionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe la función " + funcionId));
 
         Boleto boleto = new Boleto();
-        boleto.setFolio("BOLETO");
+        boleto.setFolio(UUID.randomUUID().toString());
         boleto.setFuncion(funcion);
         boleto.setFila(fila);
-        boleto.setNumero(numero + 1);
+        boleto.setNumero(numero);
 
         if (clienteId != null) {
-            Cliente cliente = clienteRepository.findById(clienteId).orElseThrow();
+            Cliente cliente = clienteRepository.findById(clienteId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe el cliente " + clienteId));
             boleto.setCliente(cliente);
-            cliente.setPuntos(cliente.getPuntos() + funcion.getPrecio() / 10);
+            cliente.setPuntos(cliente.getPuntos() + (int) (funcion.getPrecio() / 10));
         }
 
         // TODO: validar que el asiento no esté ocupado

@@ -11,8 +11,4 @@ public interface PeliculaRepository extends JpaRepository<Pelicula, Long> {
     List<Pelicula> findByGenero(String genero);
 
     List<Pelicula> findByClasificacion(Clasificacion clasificacion);
-
-    List<Pelicula> findByClasificacionNombre(String nombre);
-
-    List<Pelicula> findByGeneroo(String genero);
 }

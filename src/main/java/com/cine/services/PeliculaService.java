@@ -4,7 +4,9 @@ import com.cine.models.Clasificacion;
 import com.cine.models.Pelicula;
 import com.cine.repositories.PeliculaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -15,15 +17,16 @@ public class PeliculaService {
     private PeliculaRepository peliculaRepository;
 
     public List<Pelicula> listar() {
-        return List.of();
+        return peliculaRepository.findAll();
     }
 
     public Pelicula obtener(Long id) {
-        return peliculaRepository.findById(id).get();
+        return peliculaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No existe la película " + id));
     }
 
     public List<Pelicula> porClasificacion(Clasificacion clasificacion) {
-        return peliculaRepository.findByClasificacion(Clasificacion.A);
+        return peliculaRepository.findByClasificacion(clasificacion);
     }
 
     public Pelicula crear(Pelicula pelicula) {

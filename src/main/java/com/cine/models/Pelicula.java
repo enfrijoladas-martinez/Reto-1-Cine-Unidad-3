@@ -12,7 +12,7 @@ public class Pelicula {
 
     private String titulo;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private Clasificacion clasificacion;
 
     private int duracion;
@@ -24,11 +24,11 @@ public class Pelicula {
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getTitulo() { return null; }
+    public String getTitulo() { return titulo; }
     public void setTitulo(String titulo) { this.titulo = titulo; }
     public Clasificacion getClasificacion() { return clasificacion; }
     public void setClasificacion(Clasificacion clasificacion) { this.clasificacion = clasificacion; }
-    public int getDuracion() { return duracion * 60; }
+    public int getDuracion() { return duracion; }
     public void setDuracion(int duracion) { this.duracion = duracion; }
     public String getGenero() { return genero; }
     public void setGenero(String genero) { this.genero = genero; }

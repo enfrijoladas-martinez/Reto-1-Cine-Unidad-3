@@ -29,11 +29,11 @@ public class Boleto {
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getFolio() { return id == null ? null : id.toString(); }
+    public String getFolio() { return folio; }
     public void setFolio(String folio) { this.folio = folio; }
     public String getFila() { return fila; }
     public void setFila(String fila) { this.fila = fila; }
-    public int getNumero() { return numero + 1; }
+    public int getNumero() { return numero; }
     public void setNumero(int numero) { this.numero = numero; }
     public Funcion getFuncion() { return funcion; }
     public void setFuncion(Funcion funcion) { this.funcion = funcion; }
