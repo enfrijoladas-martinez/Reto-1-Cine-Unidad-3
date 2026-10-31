@@ -131,7 +131,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"titulo\": \"Coco\",\n  \"clasificacion\": \"AA\",\n  \"duracion\": 105,\n  \"genero\": \"Animación\"\n}",
+              "raw": "{\n  \"titulo\": \"Coco\",\n  \"clasificacion\": \"A\",\n  \"duracion\": 105,\n  \"genero\": \"Animación\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -810,6 +810,47 @@
                   "key": "numero",
                   "value": "1"
                 }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Clasificación fuera de A, B, B15, C (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Película X\",\n  \"clasificacion\": \"AA\",\n  \"duracion\": 90,\n  \"genero\": \"Drama\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/peliculas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "peliculas"
               ]
             }
           }

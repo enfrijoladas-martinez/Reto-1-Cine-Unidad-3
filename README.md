@@ -12,24 +12,24 @@ El primer commit del repositorio es el código tal como lo entregó el profesor;
 | Capa | Errores | Ejemplos |
 |---|---|---|
 | Arranque y compilación | 13 | `WebApplicationType.NONE` apagaba el servidor web; `double` asignado a `Integer` en `BoletoService`; 11 métodos de repositorio con nombres que Spring Data no puede interpretar |
-| Modelos (semántica de los datos) | 16 | `getTitulo()` regresaba `null`, `getDuracion()` multiplicaba por 60, `getPrecio()` por 100, `getEmail()` regresaba el nombre, el constructor de `Sala` invertía número y capacidad, `Clasificacion` guardada por posición |
+| Modelos (semántica de los datos) | 16 | `getTitulo()` regresaba `null`, `getDuracion()` multiplicaba por 60, `getPrecio()` por 100, `getEmail()` regresaba el nombre, el constructor de `Sala` invertía número y capacidad, `Clasificacion` con valores fuera del caso y guardada por posición |
 | Servicios | 12 | `listar()` regresaba listas vacías, `obtener()` regresaba `null`, el precio de la función se sobrescribía con 0, los puntos del cliente nunca se guardaban |
 | Controladores (REST) | 12 | Comprar boleto con `GET`, crear con `PUT`, `/{id}` leído con `@RequestParam`, película creada sin `@RequestBody`, filtro de clasificación fijo en `A` |
 
-El detalle de cada error, con archivo, línea y corrección, está en el PDF de la entrega.
+El detalle de cada error, con archivo, línea y corrección, está en [`CORRECCIONES.md`](CORRECCIONES.md).
 
 ## Ejecutar
 
 1. Copiar `.env.example` como `.env` y poner la contraseña de MySQL (la base `cine` se crea sola).
 2. `./mvnw spring-boot:run` (Windows: `mvnw.cmd spring-boot:run`). Arranca en `http://localhost:8088`.
-3. Importar `postman/Reto1_Cine.postman_collection.json` (21 solicitudes) y ejecutar en orden sobre una base vacía.
+3. Importar `postman/Reto1_Cine.postman_collection.json` (22 solicitudes) y ejecutar en orden sobre una base vacía.
 
 ## Endpoints
 
 | Método | Ruta | Cuerpo / parámetros |
 |---|---|---|
 | GET · POST | `/salas` | `{"numero":3,"capacidad":120}` |
-| GET · POST | `/peliculas` · `?clasificacion=B15` | `{"titulo":"Coco","clasificacion":"AA","duracion":105,"genero":"Animación"}` |
+| GET · POST | `/peliculas` · `?clasificacion=B15` | `{"titulo":"Coco","clasificacion":"A","duracion":105,"genero":"Animación"}` |
 | GET | `/peliculas/{id}` | — |
 | GET · POST | `/clientes` | `{"nombre":"Ana García","email":"ana.garcia@correo.com"}` |
 | GET | `/funciones` · `/funciones/{id}` | — |
